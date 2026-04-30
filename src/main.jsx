@@ -1,39 +1,43 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { RouterProvider } from "react-router/dom";
-import { createBrowserRouter } from "react-router";
 import './index.css'
+
+
+import { createBrowserRouter } from "react-router";
+import { RouterProvider } from "react-router/dom";
 import Layout from './layout/Layout';
-import NotFound from "./components/NotFound"
-import Timeline from "./pages/Timeline"
-import Stats from "./pages/Stats"
+import Home from './Home/Home';
+import Timeline from './pages/Timeline';
+import Stats from './pages/Stats';
+import CardDetails from './components/CardDetails';
+import TimelineProvider from './contexts/TimelineProvider';
+import { ToastContainer } from 'react-toastify';
+import NotFund from './Component/NotFund/NotFund';
+
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout /> ,
+    Component: Layout,
     children: [
-      {
-        index: true,
-        element: <h2>homepage</h2> ,
-      },
-      {
-        path: "/timeline",
-        element: <Timeline /> ,
-      },
-      {
-        path: "/stats",
-        element: <Stats /> ,
-      },
+      { index: true, Component: Home },
+      { path: "/timeline", Component: Timeline },
+      { path: "/stats",Component:Stats },
+      {path :"/details/:id", Component:CardDetails}
     ],
-    errorElement: <NotFound />
   },
-  
+  {
+    path:"*",
+    Component:NotFund
+  }
 ]);
 
-createRoot(document.getElementById('root')).render(
+
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />
-    
+    <TimelineProvider>
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </TimelineProvider>
   </StrictMode>,
-)
+);
